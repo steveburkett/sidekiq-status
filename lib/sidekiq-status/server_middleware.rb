@@ -35,7 +35,7 @@ module Sidekiq::Status
 
       # Determine the actual job class
       klass = msg["args"][0]["job_class"] || msg["class"] rescue msg["class"]
-      job_class = klass.is_a?(Class) ? klass : Module.const_get(klass)
+      job_class = klass.is_a?(Class) ? klass : klass.constantize
 
       # Bypass unless this is a Sidekiq::Status::Worker job
       unless job_class.ancestors.include?(Sidekiq::Status::Worker)
